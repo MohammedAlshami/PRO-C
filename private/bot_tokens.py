@@ -1,0 +1,2 @@
+discord_token = "ODI2NDUwMzQzMjI2OTAwNTMx.GOE-yh.8hOaxFQ1Z5hZOfWJ4pmczHwzJPUV2kyjLUlocA"
+chatgpt_token = "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"
