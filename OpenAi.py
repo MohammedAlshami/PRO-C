@@ -33,5 +33,4 @@ def write_code(code="simple code", language = "python"):
 
 code = """
 write a python list that contains multiple essays on why I should be the president 
-
 """

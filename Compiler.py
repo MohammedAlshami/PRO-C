@@ -12,7 +12,7 @@ class Compiler():
         pass
 
     def language_selector(self, code = None, language = None, userName = "default"):
-        # list of the keywords that are similar to the function name (in case the user misspells anything)
+        # list of the keywords that are similar to the function name (in case the user misspells)
         keywords_list = {"python": ["python", "py", "pyhon", "pyton", "pyon"],
                          "kotlin": [],
                          "javascript": ["javascript", "scrip", "javascript", "js"],

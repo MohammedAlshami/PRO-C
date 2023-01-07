@@ -50,7 +50,7 @@ async def run(interaction: discord.Interaction,  language :str, code: str):
 async def chatgpt(interaction: discord.Interaction, prompt: str):
     # await interaction.response.defer()
 
-    # output = debug(f"""{prompt}""","python")
+    # output = debug(f"""{prompt}""", "python")
     # await interaction.response.send_message(output)
     pass
 
