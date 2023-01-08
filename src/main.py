@@ -76,7 +76,7 @@ async def html(interaction: discord.Interaction, code: str):
     # making the bot wait for the output
     await interaction.response.defer()
 
-    # Getting the output as a tuple (file, embed, absolute filepath)
+    # Getting the output as a tuple (file, embed, absolute filepath as a string)
     output = None
     try:
         output = comp.language_selector(code, "html", file_name)
