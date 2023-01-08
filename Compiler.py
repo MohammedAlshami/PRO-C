@@ -66,14 +66,25 @@ class Compiler():
         # except Exception as e:
         #     return self.error_handling(f"""{e}""")
 
-    def html_compiler(self, html, userName):
+    def html_compiler(self, html, file_name):
+        file_name = f"{file_name}.png"
+
+        # Setting the flags and the pre-configurations
         htmlObj = Html2Image(custom_flags=['--default-background-color=0', '--virtual-time-budget=10000'])
+
+        # creating the images and getting the image path
         try:
-            htmlOutput = htmlObj.screenshot(html_str=html, save_as=f"{userName}.png", size=(1920, 1080))
-            output = discord.File(htmlOutput[0])
-            return output
+            htmlOutput = htmlObj.screenshot(html_str=html, save_as=file_name, size=(1920, 1080))
+            htmlOutput = htmlOutput[0]
         except Exception as e:
             return self.error_handling(f"{e}")
+
+        # formatting the output
+        file = discord.File(htmlOutput, filename=file_name)
+        embed = discord.Embed(title="Output", description=None, color=0x00ff00)  # creates embed
+        embed.set_image(url=f"attachment://{file_name}")
+
+        return (file, embed, htmlOutput)
 
     def php_compiler(self):
         pass
@@ -108,7 +119,6 @@ class Compiler():
 
     # Uses embed to format the output then returns the embed object to be used by the discord bot
     # limits the output
-
     def output_formatting(self, output):
         if len(output) == 0:
             embedVar = discord.Embed(title="OUTPUT", description=f"There is no output", color=0x00ff00)
@@ -119,6 +129,7 @@ class Compiler():
             return f"```{len(output)    }```"
         else:
             embedVar = discord.Embed(title="OUTPUT", description=f"{output}", color=0x00ff00)
+
 
             return embedVar
 
