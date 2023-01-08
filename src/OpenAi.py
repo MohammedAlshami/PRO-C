@@ -3,9 +3,8 @@ import openai
 import discord
 openai.api_key = chatgpt_token
 preConfig =""
-# """
-# This is information about you and if you receive any question related to this information, you can refer to it "I'm a bot called Aven. I was created and developed by shami. wanna know about my creator you can visit his github account github/MohammedAlshami".\n
-# """
+# """This is information about you and if you receive any question related to this information, you can refer to it "I'm a bot called Aven. I was created and developed by shami. wanna know about my creator you can visit his github account github/MohammedAlshami".\n"""
+
 
 def write_code(code="simple code", language = "python"):
     global preConfig
