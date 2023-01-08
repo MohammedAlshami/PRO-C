@@ -15,7 +15,6 @@ nest_asyncio.apply()
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 comp = Compiler()
 
-
 @bot.event
 async def on_ready():
     print("Bot is Up and ready")
@@ -29,7 +28,8 @@ async def on_ready():
     await bot.change_presence(activity=None)
 
 
-@bot.command(language="python", help="execute python script")
+
+@bot.command(language = "python", help = "execute python script")
 async def run(ctx, *, arg):
     # making the bot wait for the output
     await ctx.defer()
@@ -49,6 +49,7 @@ async def run(ctx, *, arg):
     except Exception as e:
         await ctx.send(f"An error has occurred: {e}")
 
+
     if type(output) == discord.Embed:
         await ctx.send(embed=output)
     elif type(output) == discord.file.File:
@@ -58,7 +59,7 @@ async def run(ctx, *, arg):
 
 
 @bot.tree.command(name="chatgpt")
-@app_commands.describe(prompt="Write something")
+@app_commands.describe(prompt = "Write something")
 async def chatgpt(interaction: discord.Interaction, prompt: str):
     await interaction.response.defer()
 

@@ -1,5 +1,6 @@
 # all of the compiler functions should execute the output and either pass the output to the output function or pass the error to the error function
 
+
 from html2image import Html2Image  # For html function
 from js2py import eval_js  # for javascript
 import discord  # for creating a discord file then returning it to the bot
@@ -7,12 +8,15 @@ import re  # for text processing
 import subprocess  # for python compiler
 
 
+
 class Compiler():
 
     def __init__(self):
         pass
 
-    def language_selector(self, code=None, language=None, userName="default"):
+
+    def language_selector(self, code = None, language = None, userName = "default"):
+
         # list of the keywords that are similar to the function name (in case the user misspells)
         keywords_list = {"python": ["python", "py", "pyhon", "pyton", "pyon"],
                          "kotlin": [],
@@ -20,6 +24,7 @@ class Compiler():
                          "html": ["html", "ht", "thmt", "htm", "tmhl", "lmth"],
                          "php": [],
                          "cpp": ["cpp", "cp", "c++", "cplusplus", "c+-", "c==", "c"],
+
                          "java": []
                          }
 
@@ -89,7 +94,7 @@ class Compiler():
 
     def cpp_compiler(self, code):
         code = self.parse_cpp_code(code)
-
+        
         # creates the environment for code execution
         process = subprocess.Popen(['javac++', '-x', 'c++', '-o', 'code', '-'], stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE,
@@ -122,6 +127,7 @@ class Compiler():
         if len(output) > 1999:
             print(output)
             return f"```{len(output)}```"
+
         else:
             embedVar = discord.Embed(title="OUTPUT", description=f"{output}", color=0x00ff00)
 
@@ -142,8 +148,6 @@ class Compiler():
 
 
 # implements timout for the functions so the program won't crash or stop workin g
-
-
 # Shows a formatted output of what can be done using the class aka a list of the available compiler functions
 def help(self, output):
     pass
