@@ -6,6 +6,7 @@ from discord.ext import commands
 from private.bot_tokens import discord_token
 
 from Compiler import Compiler
+from OpenAi import write_code
 
 import nest_asyncio
 nest_asyncio.apply()
@@ -24,35 +25,44 @@ async def on_ready():
     await bot.change_presence(activity=None)
 
 
+@bot.command(language = "python", help = "execute python script")
+async def run(ctx, *, arg):
+    # making the bot wait for the output
+    await ctx.defer()
 
-@bot.tree.command(name="run")
-@app_commands.describe(language = "Choose the programming language", code = "Copy and paste your code in the input box. (Must be less than 6000 characters")
-async def run(interaction: discord.Interaction,  language :str, code: str):
-    # solving the 3 seconds issue (without it the program crash if it has to wait for a function to finish
-    await interaction.response.defer()
+    # deleting the message
+    await ctx.message.delete()
 
-    # error handling
-    output = ""
+
+
+    # Parsing the input
+    arg = arg.split(' ', 1)
+    language = arg[0]
+    code = arg[1].lstrip(' ')
+
+    # Getting the output
+    output = None
     try:
-        output = comp.language_selector(code, language.lower(), interaction.user.name)
+        output = comp.language_selector(code, language.lower(), ctx.message.author.name)
     except Exception as e:
-        await interaction.followup.send(f"An error has occurred: {e}")
+        await ctx.send(f"An error has occurred: {e}")
 
-    if type(output) is discord.file.File:
-        await interaction.followup.send(file=output)
-    elif type(output) is discord.Embed:
-        await interaction.followup.send(embed=output)
+
+    if type(output) == discord.Embed:
+        await ctx.send(embed=output)
+    elif type(output) == discord.file.File:
+        await ctx.send(file=output)
     else:
-        await interaction.followup.send(f"{output}")
+        await ctx.send(f"{output}")
 
 @bot.tree.command(name="chatgpt")
 @app_commands.describe(prompt = "Write something")
 async def chatgpt(interaction: discord.Interaction, prompt: str):
-    # await interaction.response.defer()
+    await interaction.response.defer()
 
-    # output = debug(f"""{prompt}""", "python")
-    # await interaction.response.send_message(output)
-    pass
+    output = write_code(f"""{prompt}""", "python")
+
+    await interaction.followup.send(embed = output)
 
 
 bot.run(discord_token)

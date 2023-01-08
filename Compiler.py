@@ -49,6 +49,7 @@ class Compiler():
         return self.output_formatting(output)
 
 
+    # handles all of the errors by the other functions so the program won't crash
     def error_handling(self, error):
         return error
 
@@ -80,16 +81,11 @@ class Compiler():
 
 
     def cpp_compiler(self, code):
-        code = self.replace_word(code, "using", "\nusing")
-        code = code.replace("\n", "\\n")
-        code = self.replace_word(code, "int", "\nint")
-        code = self.replace_word(code, "void", "\nvoid")
-        code = self.replace_word(code, "float", "\nfloat")
-        code = self.replace_word(code, "double", "\ndouble")
-        code = self.replace_word(code, "bool", "\nbool")
+        code = self.parse_cpp_code(code)
+
 
         # creates the environment for code execution
-        process = subprocess.Popen(['g++', '-x', 'c++', '-o', 'code', '-'], stdin=subprocess.PIPE,
+        process = subprocess.Popen(['javac++', '-x', 'c++', '-o', 'code', '-'], stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
 
@@ -110,14 +106,17 @@ class Compiler():
     def java_compiler(self):
         pass
 
-    # handles all of the errors by the other functions so the program won't crash
+    # Uses embed to format the output then returns the embed object to be used by the discord bot
+    # limits the output
+
     def output_formatting(self, output):
         if len(output) == 0:
             embedVar = discord.Embed(title="OUTPUT", description=f"There is no output", color=0x00ff00)
             return embedVar
 
         if len(output) > 1999:
-            return f"```{len( output)}```"
+            print(output)
+            return f"```{len(output)    }```"
         else:
             embedVar = discord.Embed(title="OUTPUT", description=f"{output}", color=0x00ff00)
 
@@ -128,13 +127,18 @@ class Compiler():
         pattern = r"\b" + old_word + r"\b"
         return re.sub(pattern, new_word, string)
 
+    def parse_cpp_code(self, code):
+        lines = code.split('\n')
+        stripped_lines = [line.strip() for line in lines]
+        nonempty_lines = [line for line in stripped_lines if line]
+        formatted_code = '\n'.join(nonempty_lines)
+
+        return formatted_code
 
 
 # implements timout for the functions so the program won't crash or stop workin g
 
 
-# Uses embed to format the output then returns the embed object to be used by the discord bot
-# limits the output
 
 
 
