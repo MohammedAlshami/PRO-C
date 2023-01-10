@@ -6,7 +6,6 @@ import discord  # for creating a discord file then returning it to the bot
 import re  # for text processing
 import subprocess  # for python compiler
 
-
 class Compiler():
 
     def __init__(self):
@@ -15,11 +14,11 @@ class Compiler():
     def language_selector(self, code=None, language=None, userName="default"):
         # list of the keywords that are similar to the function name (in case the user misspells)
         keywords_list = {"python": ["python", "py", "pyhon", "pyton", "pyon"],
-                         "kotlin": [],
                          "javascript": ["javascript", "scrip", "javascript", "js"],
                          "html": ["html", "ht", "thmt", "htm", "tmhl", "lmth"],
-                         "php": [],
+                         "php": ["p", "php", "ph", "phpp", "pphhpp", "php"],
                          "cpp": ["cpp", "cp", "c++", "cplusplus", "c+-", "c==", "c"],
+                         "kotlin": [],
                          "java": []
                          }
 
@@ -39,7 +38,10 @@ class Compiler():
             return self.cpp_compiler(code)
 
     def python_compiler(self, code):
-        output = subprocess.run(['python', '-c', code], capture_output=True, text=True)
+        try:
+            output = subprocess.run(['python', '-c', code], capture_output=True, text=True)
+        except Exception as e:
+            return self.error_handling(e)
 
         if output.returncode == 0:
             output = output.stdout
@@ -52,17 +54,18 @@ class Compiler():
     def error_handling(self, error):
         return error
 
-    def kotlin_compiler(self):
+    def kotlin_compiler(self, code):
+
         pass
 
     def javascript_compiler(self, code):
-        output = eval_js(code)
-        print(output)
-        # try:
-        #
-        #     return self.output_formatting(output)
-        # except Exception as e:
-        #     return self.error_handling(f"""{e}""")
+        try:
+            output = eval_js(code)
+        except Exception as e:
+            return self.error_handling(e)
+
+        return self.output_formatting(output)
+
 
     def html_compiler(self, html, file_name):
         file_name = f"{file_name}.png"
@@ -84,19 +87,25 @@ class Compiler():
 
         return (file, embed, htmlOutput)
 
-    def php_compiler(self):
-        pass
+    def php_compiler(self, code):
+        process = subprocess.run(
+            ['php', '-r', code],
+            capture_output=True,
+            text=True
+        )
+
+        # Return the output of the process
+        return process.stdout
 
     def cpp_compiler(self, code):
-        code = self.parse_cpp_code(code)
 
         # creates the environment for code execution
-        process = subprocess.Popen(['javac++', '-x', 'c++', '-o', 'code', '-'], stdin=subprocess.PIPE,
+        process = subprocess.Popen(['g++', '-x', 'c++', '-o', 'code', '-'], stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
-
         # runs the program to check for any errors that is not inside the code
         output, error = process.communicate(input=code.encode())
+
         if process.returncode != 0:
             return self.output_formatting(error.decode())
         else:
@@ -116,14 +125,17 @@ class Compiler():
     # limits the output
     def output_formatting(self, output):
         if len(output) == 0:
-            embedVar = discord.Embed(title="OUTPUT", description=f"There is no output", color=0x00ff00)
+            embedVar = discord.Embed(title="OUTPUT", description=f"```There is no output```", color=0xFF0000)
+            embedVar.set_footer(text="Bot made by Shami", icon_url="https://i.imgur.com/Chntn67.png")
+
             return embedVar
 
         if len(output) > 1999:
             print(output)
             return f"```{len(output)}```"
         else:
-            embedVar = discord.Embed(title="OUTPUT", description=f"{output}", color=0x00ff00)
+            embedVar = discord.Embed(title="OUTPUT", description=f"```{output}```", color=0x32CD32)
+            embedVar.set_footer(text="Bot made by Shami#5662", icon_url="https://i.imgur.com/Chntn67.png")
 
             return embedVar
 
@@ -132,18 +144,29 @@ class Compiler():
         pattern = r"\b" + old_word + r"\b"
         return re.sub(pattern, new_word, string)
 
-    def parse_cpp_code(self, code):
-        lines = code.split('\n')
-        stripped_lines = [line.strip() for line in lines]
-        nonempty_lines = [line for line in stripped_lines if line]
-        formatted_code = '\n'.join(nonempty_lines)
+    def help(self):
+        commands = """```
+          ---- Commands ---- 
+                   
+    /html code    
+    /chatgpt prompt    
+    /help    
+    !run language code 
+    
+```
+```
+          ---- Examples ----          
+        
+    1. /html <h1>Hello World</h1>    
+    2. /chatgpt Does One Piece Suck?    
+    3. /help 
+    4. !run python print("hello world")
+    4. !run python print("hello world")
 
-        return formatted_code
+```   
+"""
+        embedVar = discord.Embed(title="HELP", description=commands, color=0x32CD32)
 
+        embedVar.set_footer(text="Bot made by Shami#5662", icon_url="https://i.imgur.com/Chntn67.png")
 
-# implements timout for the functions so the program won't crash or stop workin g
-
-
-# Shows a formatted output of what can be done using the class aka a list of the available compiler functions
-def help(self, output):
-    pass
+        return embedVar

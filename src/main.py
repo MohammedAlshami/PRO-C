@@ -30,31 +30,37 @@ async def on_ready():
 
 
 @bot.command(language="python", help="execute python script")
-async def run(ctx, *, arg):
+async def run(ctx, *, arg =""):
     # making the bot wait for the output
     await ctx.defer()
 
-    # deleting the message
-    await ctx.message.delete()
 
     # Parsing the input
     arg = arg.split(' ', 1)
-    language = arg[0]
-    code = arg[1].lstrip(' ')
+    if len(arg) > 1:
+        # deleting the message
+        await ctx.message.delete()
+        language = arg[0]
+        code = arg[1].lstrip(' ')
+        code = code.strip("`")
+        # Getting the output
+        output = None
+        try:
+            output = comp.language_selector(code, language.lower(), ctx.message.author.name)
+        except Exception as e:
+            await ctx.send(f"An error has occurred: {e}")
 
-    # Getting the output
-    output = None
-    try:
-        output = comp.language_selector(code, language.lower(), ctx.message.author.name)
-    except Exception as e:
-        await ctx.send(f"An error has occurred: {e}")
-
-    if type(output) == discord.Embed:
-        await ctx.send(embed=output)
-    elif type(output) == discord.file.File:
-        await ctx.send(file=output)
+        if type(output) == discord.Embed:
+            await ctx.send(embed=output)
+        elif type(output) == discord.file.File:
+            await ctx.send(file=output)
+        else:
+            await ctx.send(f"{output}")
     else:
-        await ctx.send(f"{output}")
+        # create error embed
+        embedVar = discord.Embed(title="Command", description=f"```!run has 2 arguments (language, code)```", color=0xFF0000)
+        embedVar.set_footer(text="Bot made by Shami#5662", icon_url="https://i.imgur.com/Chntn67.png")
+        await ctx.send(embed=embedVar)
 
 
 @bot.tree.command(name="chatgpt")
@@ -62,9 +68,16 @@ async def run(ctx, *, arg):
 async def chatgpt(interaction: discord.Interaction, prompt: str):
     await interaction.response.defer()
 
-    output = write_code(f"""{prompt}""", "python")
+    try:
+        output = write_code(f"""{prompt}""", "python")
+    except Exception as e:
+        output = discord.Embed(title="Error", description=f"```We're sorry but the output couldn't be generated. Try again!```", color=0xFF0000)
+        output.set_footer(text="Bot made by Shami#5662", icon_url="https://i.imgur.com/Chntn67.png")
+
 
     await interaction.followup.send(embed=output)
+
+
 
 
 @bot.tree.command(name="html")
@@ -91,6 +104,14 @@ async def html(interaction: discord.Interaction, code: str):
 
     # deleting the file once the process is done
     os.remove(output[2])
+
+
+@bot.tree.command(name="help")
+async def help(interaction: discord.Interaction):
+    # making the bot wait for the output
+    await interaction.response.defer()
+    await interaction.followup.send(embed=comp.help())
+
 
 
 bot.run(discord_token)

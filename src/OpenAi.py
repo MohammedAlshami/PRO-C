@@ -10,13 +10,14 @@ def write_code(code="simple code", language = "python"):
     response = openai.Completion.create(
         model="text-davinci-003",
         prompt=f"{preConfig}{code}\n",
-        temperature=0,
+        temperature=.4,
         max_tokens=2048,
         top_p=1,
         frequency_penalty=0.2,
         presence_penalty=0
     )
-    embedVar = discord.Embed(title="OUTPUT", description=f"""```{response["choices"][0]["text"]}```""", color=0x00ff00)
+    embedVar = discord.Embed(title="Response", description=f"""```{response["choices"][0]["text"]}```""", color=0x00ff00)
+    embedVar.set_footer(text="Bot made by Shami#5662", icon_url="https://i.imgur.com/Chntn67.png")
     return embedVar
 
 
