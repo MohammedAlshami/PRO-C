@@ -24,7 +24,7 @@ It covers the following languages
 ## Demo
 
 Insert gif or link to demo
-![HTML example](https://media.tenor.com/YyUhFmjN5wAAAAAM/happy-winnie-the-pooh.gif)
+![ChatGPT example](https://imgur.com/a39ffc38-9810-439d-8af6-3a510fba7240)
 
 ## Roadmap
 
