@@ -24,18 +24,21 @@ It covers the following languages
 ## Demo
 
 Insert gif or link to demo
+- ChatGPT
 ![ChatGPT example](https://i.imgur.com/CMe1xaE.gif)
+- run command
 ![run example](https://imgur.com/LoWAQJ1.gif)
-![html example](https://imgur.com/u1TpGgu.gif)
+
 
 ## Roadmap
 
-- Additional browser support
-
-- Add more integrations
+- Improve overall speed
+- Implement parallelism
+- Improve competition submission system
+- Add Kotlin, Java, and JavaScript support
 
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](https://github.com/MohammedAlshami/pro-c/blob/main/LICENSE.md)
 
