@@ -25,6 +25,8 @@ It covers the following languages
 
 Insert gif or link to demo
 ![ChatGPT example](https://i.imgur.com/CMe1xaE.gif)
+![run example](https://imgur.com/LoWAQJ1.gif)
+![html example](https://imgur.com/u1TpGgu.gif)
 
 ## Roadmap
 
