@@ -24,7 +24,7 @@ It covers the following languages
 ## Demo
 
 Insert gif or link to demo
-![ChatGPT example](https://imgur.com/a39ffc38-9810-439d-8af6-3a510fba7240)
+![ChatGPT example]([https://imgur.com/a39ffc38-9810-439d-8af6-3a510fba7240](https://i.imgur.com/CMe1xaE.gif))
 
 ## Roadmap
 
