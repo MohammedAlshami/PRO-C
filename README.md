@@ -1,5 +1,5 @@
 
-# Project Title
+# Pro-c Bot
 Pro-c Bot is a Discord bot that improves programming education by providing tools for skill development and community engagement. It features a command-line compiler, Q&A assistance using the ChatGPT API, and a submission system for student work.
 
 
