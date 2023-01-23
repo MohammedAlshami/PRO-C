@@ -23,7 +23,6 @@ It covers the following languages
 
 ## Demo
 
-Insert gif or link to demo
 - ChatGPT
 ![ChatGPT example](https://i.imgur.com/CMe1xaE.gif)
 - run command
